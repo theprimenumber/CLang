@@ -1,0 +1,104 @@
+To delete a character under a cursor,  press 'x' command. This will delete the character under the cursor.
+To delete the whole line, use 'dd' command. The following line will move up to fill the gap that was cleared as the process.
+We can join two lines together, which means that the line break between them has to be deleted. Place cursor anywhere on line , use 'J', this will delete NewLine from that line.
+The above operation will delete the newline character and replaces it with a space followed by moving following line adjacent to space.
+
+We can undo each change by using 'u' command. This command undoes the last edit. Edit means changing the content of file.
+For each undo, we can use redo using C-R. There is a special version of undo command, aka 'U' command. The undo line command undoes all the changes made on the last line that was edited.
+Typing 'U' twice cancels the preceding 'U'. It wont consider change introduced in INSERT MODE, it will consider only changes done in NORMAL MODE.
+
+'i' command is used to insert a character before the character under the cursor. To add after the cursor, use 'a' command. After completing editing, letting into NORMAL MODE will move the cursor by one place previous from where the commands are issued. 
+'o' command creates a new empty line below the cursor and puts VIM into INSERT MODE. Then we can type the text for the new line.
+'O' command opens a line above the cursor and places into INSERT MODE.
+
+We can exit VIM with 'ZZ' command. This command writes the file and exits. VIM doesn't automatically make a backup file. Using 'ZZ', will commit the changes and there's no turning back. We can configure the VIM to produce backup files.
+
+The override command modifier ! is needed bcoz VIM is reluctant to throw away changes. If we exit without using :q!, we would display an error and refuse to exit.
+By specifying this, we are telling that "I know that what I'm doing looks stupid, but I really want to do this".
+If we want to continue editing with VIM. The ':e!' reloads the original version of the file.
+
+To get a complete index of all VIM commands: use command ':help index'
+To get help what will happen when key combination is used: use command ':help CTRL-A' - We should Control Key as CTRL
+
+Resource: https://neovim.io/doc/user/usr_02.html#usr_02.txt
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CH03 - MOVIN AROUND
+Before we want insert or delete text the cursor has to be moved to the right place. VIM has a large number of commands to place the cursor. Full list is available at Q_lr
+
+To move the cursor forward one word, use 'w' command. To move backward one word, use 'b' command. Both can be combined with a numeric argument.
+To move to the end of the next word, use 'e' command and to move backward to the previoud end of a word, use 'ge' command.
+If we are at the last word of a line, using 'w' command will take the cursor to the first word of next line. Same applies to 'b' command.
+A Word ends at a non-word character such as {,.-) ; To change what is considered as word, we need to configure 'iskeyword' option. 
+To jump without going through special symbols like '/', use 'W' command. This has the extended set of commands as E, B, gE.
+The above CAPITAL versions are used to move by jumping around through white-space separated WORDS.
+
+The '$' command moves the cursor to the end of a line. If <End> key is present, this will do the same job.
+The '^' command moves to the first non-blank character of the line. '0' command moves to the very first character of the line, same performed by <Home> key.
+'$' command can take a numeric argument, which set is pass through specified number of lines and set it to the end of n^th line.
+Count cannot work on '^' and '0' commands. 
+
+SINGLE CHARACTER SEARCH COMMANDS:
+The command 'fx' searches forward in the line for the single chacter 'x'. Remember 'f' stands for "Find". If VIM cant find the position, then no movement of cursor is acheived.
+We can give a numeric argument to make the command execute specified times. The command 'Fh' will move backward in a line and do the same job.
+The command 'tx' is similar to 'fx' but it will stop one character before the search command. Remember 't' for "Till/To". The command 't' backward version is 'T'.
+In the whole process, cursor is never moved to next line. 
+
+We can match the symbols like (), {}, [] with '%' command. This can be defined with the 'matchpairs' option. When the cursor is not on the pair character, command '%' will search forward to find one and jumps there.
+
+The '%' command when used with numeric argument moves to the specified percentage of the file, so '50%' will move halfway through the file. 
+We can use commands like 'H', 'M', 'L' to only move in the lines visible now. 'H' means "Home/High" aka Top line, "Middle" for 'M', 'L' for "Last/Low" aka Bottom Line.
+
+We can set the option "number" that will display the line number in front of every written line.
+
+SCROLLING AROUND:
+The command C-U scrolls down half a screen of text, which means window moves up over the text, which is backward in a file. 'U' for "UP".
+The command C-D scrolls up half a screen of text, which means window moves down over the text, which is forward in a file. 'D' for "DOWN'.
+To scroll one line at a time, use C-E command (Scroll Up), and C-Y command to scroll down.
+To scroll forward by a whole screen by keeping two lines for continuity, use C-F command for forward. For backward, use C-B command. 'F' for "FORWARD", 'B' for "BACKWARD".
+When we are at the bottom of screen, we want to see the context of line with the cursor, which can be done with 'zz' command.
+The command 'zt' puts the cursor line at the top, and 'zb' at the bottom. For more scrolling commands, check Q_sc 
+To always keep a few lines around the cursor, use 'scrolloff' option.
+
+REFER THIS CHAPTER ONCE MORE:
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SETTING SETTINGS
+
+Vim can be tuned to work like we want it to be. To start VIM with all our favorite option settings and mappings, we write them in a file called 'init.vim' file.
+Vim executes the commands in this file when it starts up.
+This file is always used and is recommended in the following places:
+~/.config/nvim/init.vim for UNIX and OSX systems.
+~/AppData/Local/nvim/init.vim in Windows.
+
+The vimrc file can contain all the commands that we type after a colon. The simplest ones are setting options. A file containing initialization commands is generically called as "vimrc" or "config" file. It can be either VIMScript aka init.vim or Lua aka init.lua file, but cannot be both.
+To know more about writing VIM Script refer usr_41.txt
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CH07 - Editing more than one file.
+No matter how many files we have, we can edit them without leaving VIM. 
+To open anothe file to edit, use command ":edit foo.txt" this will open a file "foo.txt". VIM close the current file and open the new one.
+We can write the contents to the file, use ":write" command. 
+We can force the VIM to ignore or discard the changes and edit the new file, use command ":edit! foo.txt".
+Instead of discarding and closing the file. We can hide it from the window with ":hide edit foo.txt"
+
+
+
+
+The easiest way to open a new window is to use the following commad: ":split"
+This will split the screen into two windows and leaves the cursor in the top one.
+The command C-w can be used to jump between the windows. 
+
+To close the window: we can use commands such as ":close", "quit", ":exit", ":q" or "ZZ". But ":close" prevents us from accidently exiting VIM when we close the last window.
+If we have bunch of windows, but we want to concentrate only one of them. Place the cursor into the one in which we want to concentrate, use command ":only"
+However, if any other windows, has changes, then we will get an error message and that window wont be closed.
+
+To split a window with other file, use command ":split two.c". To open a window with a new empty file, use ":new"
+We can repeat the ":split" and ":new" commands to create as many windows as we like. Split can take numerical argument which specifies how many lines it want to occupy.
+For existing windows, we can change their size in several ways. With mouse its easy. With keyboard, we can use C-W + to increase, C-W - to decrease. These commands can accept a numeric argument which tells them how many lines. 
+To set the window to a specified number of lines: "{height}C-W _"
+To make a window as high it can be , use "C-W _"
+
+The option "equalalways" when set, makes VIM to equalize the window sizes when a window is closed or opened.
+
+To make a Vertical Split, use ":vsplit" and it will have same rules as ":split".
+To open a new empty file in vertical split: use ":vnew", ":vertical new".
+The ":vertical" command can be inserted before another command that splits a window. This will cause that command to split the window vertically instead of horizontally (undefined behaviour scope).
